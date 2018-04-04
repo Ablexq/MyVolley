@@ -10,21 +10,18 @@ import com.example.xuqiang.myvolley.asynctask.MyAsyncTask;
 import com.example.xuqiang.myvolley.constant.Constant;
 import com.example.xuqiang.myvolley.asynctask.AsyncCallBack;
 import com.example.xuqiang.myvolley.asynctask.AsyncTaskUtil;
-import com.example.xuqiang.myvolley.retrofitrxjava.HomeObserver;
-import com.example.xuqiang.myvolley.retrofitrxjava.HttpResult;
 import com.example.xuqiang.myvolley.retrofitrxjava.RetrofitUtil;
-import com.example.xuqiang.myvolley.retrofitrxjava.RxHomeDataBean;
-import com.example.xuqiang.myvolley.retrofitrxjava.TestApi;
+import com.example.xuqiang.myvolley.retrofitrxjava.entity.HttpResult;
+import com.example.xuqiang.myvolley.retrofitrxjava.subscriber.ProgressSubscriber;
+import com.example.xuqiang.myvolley.retrofitrxjava.subscriber.SubscriberOnNextListener;
 import com.example.xuqiang.myvolley.volley.VolleyCallBack;
 import com.example.xuqiang.myvolley.volley.VolleyUtil;
-import com.google.gson.Gson;
 import com.trello.rxlifecycle.components.support.RxFragmentActivity;
 
 import java.util.HashMap;
+import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
+@SuppressWarnings("unchecked")
 public class MainActivity extends RxFragmentActivity implements View.OnClickListener {
 
     private MyAsyncTask myAsyncTask;
@@ -73,19 +70,12 @@ public class MainActivity extends RxFragmentActivity implements View.OnClickList
     }
 
     private void retrofit() {
-        RetrofitUtil.createService(TestApi.class)
-                .getTest("0", "1", "200")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new HomeObserver<HttpResult<RxHomeDataBean>>() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onNext(HttpResult<RxHomeDataBean> rxHomeDataBeanHttpResult) {
-                        if (rxHomeDataBeanHttpResult != null) {
-                            tv.setText("rx======" + new Gson().toJson(rxHomeDataBeanHttpResult));
-                        }
-                    }
-                });
+        SubscriberOnNextListener getTopMovieOnNext = (SubscriberOnNextListener<List<HttpResult.DataBean.PageListBean>>) list -> {
+            String str = "" + list.get(0).getControl_data().getItems().get(0).getCustom_pic();
+            tv.setText(str);
+        };
+        ProgressSubscriber progressSubscriber = new ProgressSubscriber(getTopMovieOnNext, MainActivity.this);
+        RetrofitUtil.getInstance().getTest(progressSubscriber, "0", "1", "200");
     }
 
     @SuppressLint("HandlerLeak")
