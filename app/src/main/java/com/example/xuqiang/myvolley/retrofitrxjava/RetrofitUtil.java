@@ -36,7 +36,7 @@ public class RetrofitUtil {
 
     private Retrofit retrofit;
 
-    //在访问HttpMethods时创建单例
+    //创建单例
     private static class SingletonHolder {
         private static final RetrofitUtil INSTANCE = new RetrofitUtil();
     }
@@ -101,7 +101,7 @@ public class RetrofitUtil {
 
     //--------------------------------------------------------------------------------------------------------------
 
-    public void getTest(Subscriber<HttpResult> subscriber, String id, String pages, String maxperpage) {
+    public void getTest(Subscriber subscriber, String id, String pages, String maxperpage) {
         Observable observable = retrofit.create(TestApi.class).getTest(id, pages, maxperpage)
                 .map(httpResult -> httpResult.getData().getPage_list());
 
