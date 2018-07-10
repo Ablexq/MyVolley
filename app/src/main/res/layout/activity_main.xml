@@ -37,6 +37,14 @@
             android:text="@string/rxget"
             android:textSize="25sp" />
 
+        <Button
+            android:id="@+id/btn4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/okhttpost"
+            android:textSize="25sp" />
+
         <TextView
             android:id="@+id/tv"
             android:layout_width="match_parent"

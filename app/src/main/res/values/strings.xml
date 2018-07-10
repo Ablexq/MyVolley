@@ -4,4 +4,5 @@
     <string name="rxget">rxget</string>
     <string name="asynctask">Asynctask</string>
     <string name="data">请求的数据</string>
+    <string name="okhttpost">OKHTTPPOST</string>
 </resources>
