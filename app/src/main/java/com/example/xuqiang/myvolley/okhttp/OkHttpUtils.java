@@ -5,12 +5,12 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.KeyManagementException;
 import java.security.KeyStore;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -50,6 +50,7 @@ public class OkHttpUtils {
                 .hostnameVerifier((hostname, session) -> true)//支持HTTPS
                 .sslSocketFactory(getUnSafeSSLSocketFactory())//支持HTTPS
                 .cache(new Cache(sdcache, cacheSize))//缓存
+                .addNetworkInterceptor(new StethoInterceptor())//添加stetho调试功能
                 .build();
     }
 

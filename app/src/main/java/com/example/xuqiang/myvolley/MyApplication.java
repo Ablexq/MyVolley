@@ -2,6 +2,8 @@ package com.example.xuqiang.myvolley;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+
 /**
  * ================================================
  * 作    者：marsxq
@@ -18,6 +20,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         myApplication = this;
+        Stetho.initializeWithDefaults(this);
     }
 
     public static MyApplication getInstance() {
